@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour
 {
-    private void Start()
+    private void Awake()
     {
         CreatePlr();
-
     }
 
     private void CreatePlr()
@@ -26,7 +26,7 @@ public class GameHandler : MonoBehaviour
             new Vector3(20, 0)
         };
 
-        //uv only in range 0 - 1, repesented by vertices, same index
+        //uv only in range 0 - 1, represented by vertices, same index
         uv[0] = new Vector2(0, 0);
         uv[1] = new Vector2(0, 1);
         uv[2] = new Vector2(1, 0);
@@ -57,5 +57,7 @@ public class GameHandler : MonoBehaviour
         newGameObject.GetComponent<Rigidbody2D>().gravityScale = 35;
         newGameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
+        newGameObject.transform.localScale = new Vector3(.5f, .5f, 1);
+        newGameObject.transform.SetParent(transform.root);
     }
 }
