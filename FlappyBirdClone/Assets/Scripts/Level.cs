@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using System.Collections;
 
 public class Level : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class Level : MonoBehaviour
     private Action onPipePassedBird;
     public Action OnPipePassedBird { get => onPipePassedBird; set => onPipePassedBird = value; }
     public static Level Instance { get => instance; }
+    public GameMode CurrentGameMode { get => currentGameMode; }
 
     private const float CAMERA_ORTO_SIZE = 50f;
     private const float WIDTH_PIPE = 15;
@@ -16,7 +19,16 @@ public class Level : MonoBehaviour
     private const int PIPE_SPAWN_X_POS = 100;
 
     [SerializeField]
-    DifficultData difficulties;
+    private SpriteRenderer backGround;
+    [SerializeField]
+    private DifficultData difficulties;
+    [SerializeField]
+    public GameMods gameMods;
+
+    private List<GameMode> gameModeForPlay = new List<GameMode>();
+    private GameMode currentGameMode;
+    private int currentGameModeId = 0;
+
     int difficultyPipeSpawnCount = 0;
     private int currentDifficulty = 0;
     [SerializeField]
@@ -36,6 +48,8 @@ public class Level : MonoBehaviour
 
     private void Awake()
     {
+        gameModeForPlay.AddRange(gameMods.GameModes);
+
         instance = this;
         pipeList = new List<Transform>();
         if(difficulties.GetLenghth() != 0)
@@ -44,7 +58,10 @@ public class Level : MonoBehaviour
             SetDifficulty(difficulties[currentDifficulty]);
         }
     }
-
+    private void Start()
+    {
+        ChangeGameMode();
+    }
     private void Update()
     {
         if (Bird.Instance.objRigidbody2D.bodyType == RigidbodyType2D.Dynamic)
@@ -53,6 +70,16 @@ public class Level : MonoBehaviour
             HandlePipeMovement();
         }
     }
+
+    private void ChangeGameMode()
+    {
+        currentGameModeId = UnityEngine.Random.Range(0, gameModeForPlay.Count);
+        currentGameMode = gameModeForPlay[currentGameModeId];
+        gameModeForPlay.Remove(currentGameMode);
+        backGround.sprite = currentGameMode.backGround;
+        Bird.Instance.SetNewGameMode(currentGameMode);
+    }
+
     private void HandlePipeSpawner()
     {
         pipeSpawnTimer -= Time.deltaTime;
@@ -81,10 +108,15 @@ public class Level : MonoBehaviour
 
     private void HandlePipeMovement()
     {
+        if (Bird.Instance.objRigidbody2D == null)
+            return;
+
         for (int i = 0; i < pipeList.Count; i++)
         {
-            Transform pipe = pipeList[i];
+            if (pipeList[i] == null)
+                continue;
 
+            Transform pipe = pipeList[i];
             bool isRightFromPlrBird = pipe.position.x > Bird.Instance.objRigidbody2D.transform.position.x;
 
             pipe.position += new Vector3(-1, 0, 0) * pipeMoveSpeed * Time.deltaTime;
@@ -141,14 +173,5 @@ public class Level : MonoBehaviour
         pipe.GetComponentInChildren<BoxCollider2D>().size = new Vector2(WIDTH_PIPE, height);
         pipe.GetComponentInChildren<BoxCollider2D>().offset = new Vector2(0, height * .5f);
 
-    }
-    [Serializable]
-    public class Difficulty
-    {
-        public string difficultyTitle;
-        public int pipeSpawnedCapacity;
-        public float gapSize;
-        public int pipeMoveSpeed;
-        public float pipeSpawnTimerMax;
     }
 }

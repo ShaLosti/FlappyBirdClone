@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4473db33402d1c4ab750f10d5186509, type: 3}
+  m_Name: SimpleGameMode
+  m_EditorClassIdentifier: 
+  gameModeTitle: Simple
+  backGround: {fileID: 21300000, guid: 05d755b3555a98b419cab6f0d4d2e549, type: 3}
+  plrSprite: {fileID: -7390568835900721232, guid: 922116a46267fcc4e8fa897a10f6ad31,
+    type: 3}
+  music: {fileID: 0}
+  globalGameMode: 0
+  jumpShots: []
+  buttonEnterShots: []

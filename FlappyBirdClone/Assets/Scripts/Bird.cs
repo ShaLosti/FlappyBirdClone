@@ -9,7 +9,13 @@ public class Bird : MonoBehaviour
     public static Bird Instance { get => instance; }
     public Action OnDie { get => onDie; set => onDie = value; }
 
+    private Action<GameObject> fallingDown;
+    private Action<GameObject> risingUp;
+
+    private GameMode lastGameMode;
+
     public Rigidbody2D objRigidbody2D;
+    private Sprite birdSprite;
     private const int JUMPAMPUNT = 100;
 
     public bool AllowMove = true;
@@ -17,12 +23,30 @@ public class Bird : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        birdSprite = GetComponent<Sprite>();
     }
     private void Start()
     {
         objRigidbody2D = GetComponent<Rigidbody2D>();
         objRigidbody2D.bodyType = RigidbodyType2D.Static;
     }
+
+    public void SetNewGameMode(GameMode gameMode)
+    {
+        birdSprite = gameMode.plrSprite;
+
+        if(lastGameMode != null)
+        {
+            fallingDown -= gameMode.BirdGoDown;
+            risingUp -= gameMode.BirdGoUp;
+        }
+
+        fallingDown += gameMode.BirdGoDown;
+        risingUp += gameMode.BirdGoUp;
+
+        lastGameMode = gameMode;
+    }
+
     private void OnEnable()
     {
         onDie += StopBirdMove;
@@ -55,9 +79,13 @@ public class Bird : MonoBehaviour
                 break;
         }
 
+        if (objRigidbody2D.velocity.y < 0)
+            fallingDown?.Invoke(gameObject);
+        else if (objRigidbody2D.velocity.y > 0)
+            risingUp?.Invoke(gameObject);
+
         if (transform.position.y < -50 || transform.position.y > 50)
             OnDie?.Invoke();
-
     }
 
     private void StopBirdMove()

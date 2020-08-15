@@ -5,7 +5,7 @@ public class GameHandler : MonoBehaviour
 {
     private void Awake()
     {
-        CreatePlr();
+        //CreatePlr();
     }
 
     private void CreatePlr()
