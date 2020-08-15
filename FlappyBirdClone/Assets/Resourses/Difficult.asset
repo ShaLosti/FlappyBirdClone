@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: Difficult
   m_EditorClassIdentifier: 
   difficultList:
-  - difficultyTitle: 
-    pipeSpawnedCapacity: 0
-    gapSize: 0
-    pipeMoveSpeed: 0
-    pipeSpawnTimerMax: 0
-  currentDifficult:
-    difficultyTitle: 
-    pipeSpawnedCapacity: 0
-    gapSize: 0
-    pipeMoveSpeed: 0
-    pipeSpawnTimerMax: 0
+  - {fileID: 11400000, guid: 37102b21f81e9c342bf67422683e0a83, type: 2}
+  - {fileID: 11400000, guid: 9a13da9dfe86e3a488c77532f3a080ca, type: 2}
+  - {fileID: 11400000, guid: 70ebd02f79278f141a97240425deb204, type: 2}

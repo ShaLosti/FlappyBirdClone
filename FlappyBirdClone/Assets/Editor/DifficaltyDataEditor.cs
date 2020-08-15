@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+﻿/*using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 
@@ -40,3 +40,4 @@ public class DifficaltyDataEditor : Editor
         base.OnInspectorGUI();
     }
 }
+*/

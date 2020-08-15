@@ -5,10 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Difficultes/StandartDifficultes", fileName = "New difficult database")]
 public class DifficultData : ScriptableObject
 {
-    [SerializeField, HideInInspector]
-    public List<Difficult> difficultList;
-
     [SerializeField]
+    public Difficult[] difficultList;
+
+    /*[SerializeField]
     private Difficult currentDifficult;
 
     private int currentIndex = 0;
@@ -23,7 +23,7 @@ public class DifficultData : ScriptableObject
             difficultList = new List<Difficult>();
 
         currentDifficult = new Difficult();
-        if (!difficultList.Contains(currentDifficult) && currentDifficult.difficultyTitle != "")
+        if (currentDifficult.difficultyTitle != "")
             difficultList.Add(currentDifficult);
 
         currentIndex = difficultList.Count - 1;
@@ -84,20 +84,5 @@ public class DifficultData : ScriptableObject
                 difficultList[index] = value;
             else Debug.LogError("Out of massive or sended data == null");
         }
-    }
-}
-
-[Serializable]
-public class Difficult
-{
-    [Tooltip("Название сложности")]
-    public string difficultyTitle = "";
-    [Tooltip("Количество пайпов для данной сложности")]
-    public int pipeSpawnedCapacity = 0;
-    [Tooltip("Высота пайпов")]
-    public float gapSize = 0;
-    [Tooltip("Скорость пайпов")]
-    public int pipeMoveSpeed = 0;
-    [Tooltip("Промежуток времени между спавном новых пайпов")]
-    public float pipeSpawnTimerMax = 0;
+    }*/
 }

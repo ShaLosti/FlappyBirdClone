@@ -52,10 +52,10 @@ public class Level : MonoBehaviour
 
         instance = this;
         pipeList = new List<Transform>();
-        if(difficulties.GetLenghth() != 0)
+        if(difficulties.difficultList.Length != 0)
         {
-            difficultyPipeSpawnCount = difficulties[currentDifficulty].pipeSpawnedCapacity;
-            SetDifficulty(difficulties[currentDifficulty]);
+            difficultyPipeSpawnCount = difficulties.difficultList[currentDifficulty].pipeSpawnedCapacity;
+            SetDifficulty(difficulties.difficultList[currentDifficulty]);
         }
     }
     private void Start()
@@ -145,13 +145,13 @@ public class Level : MonoBehaviour
     private Difficult GetDifficulty()
     {
         difficultyPipeSpawnCount--;
-        if (difficultyPipeSpawnCount == 0 && !(currentDifficulty + 1 >= difficulties.GetLenghth()))
+        if (difficultyPipeSpawnCount == 0 && !(currentDifficulty + 1 >= difficulties.difficultList.Length))
         {
             currentDifficulty++;
-            difficultyPipeSpawnCount = difficulties[currentDifficulty].pipeSpawnedCapacity;
+            difficultyPipeSpawnCount = difficulties.difficultList[currentDifficulty].pipeSpawnedCapacity;
         }
 
-        return difficulties[currentDifficulty];
+        return difficulties.difficultList[currentDifficulty];
     }
 
     private void CreatePipe(float height, float xPos, bool createOnBottom)
