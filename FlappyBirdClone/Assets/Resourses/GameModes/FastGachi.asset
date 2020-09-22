@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b9f0bbffde8de44a451ffb8d071c44, type: 3}
+  m_Name: FastGachi
+  m_EditorClassIdentifier: 
+  gameModeTitle: FastGachi
+  backGround: {fileID: 21300000, guid: 05d755b3555a98b419cab6f0d4d2e549, type: 3}
+  plrPref: {fileID: 7694698236613340345, guid: e9398efc6d57aab4fb23dbc70aaa9a3d, type: 3}
+  pipePref: {fileID: 6620241544951830969, guid: 54cb35bb89e07d94eb969322839c588c,
+    type: 3}
+  pipeHeadPref: {fileID: 8597527749495929038, guid: f81c1e2b5a2f0e641b2f8928aa1eb289,
+    type: 3}
+  globalGameMode: 0
+  backGroundColor: {r: 1, g: 0.43867922, b: 0.8577887, a: 1}
+  difficult: {fileID: 11400000, guid: e0afd44c0e9ff3a4aa76682f720647aa, type: 2}
+  audioSourse:
+  - audioSoundsKey: 3
+    audioSource: {fileID: 8300000, guid: 022dcc576ef271043a372cab4cb72af7, type: 3}

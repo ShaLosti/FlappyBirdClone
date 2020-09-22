@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4473db33402d1c4ab750f10d5186509, type: 3}
+  m_Name: SlowFeelsBadManMod
+  m_EditorClassIdentifier: 
+  gameModeTitle: SlowFeelsBadManMod
+  backGround: {fileID: 21300000, guid: 05d755b3555a98b419cab6f0d4d2e549, type: 3}
+  plrPref: {fileID: 7694698236613340345, guid: 3e84c46aff3c6114d8ac919e4a083d7a, type: 3}
+  pipePref: {fileID: 6620241544951830969, guid: 54cb35bb89e07d94eb969322839c588c,
+    type: 3}
+  pipeHeadPref: {fileID: 8597527749495929038, guid: f81c1e2b5a2f0e641b2f8928aa1eb289,
+    type: 3}
+  globalGameMode: 0
+  backGroundColor: {r: 0.17381631, g: 0.1981132, b: 0.16166785, a: 1}
+  difficult: {fileID: 11400000, guid: 37102b21f81e9c342bf67422683e0a83, type: 2}
+  particleSystem: {fileID: 2612468420244815652, guid: 92c497b3e0763db44a05c0da2309702e,
+    type: 3}
+  audioSourse:
+  - audioSoundsKey: 3
+    audioSource: {fileID: 8300000, guid: f1327fe836e33574fb9858ee22fdeb7f, type: 3}
+  - audioSoundsKey: 0
+    audioSource: {fileID: 8300000, guid: 6d7178b8a9508904083b5a92a59d51f8, type: 3}
+  - audioSoundsKey: 1
+    audioSource: {fileID: 8300000, guid: 7c64158057525f340a3305dadaeccd5f, type: 3}

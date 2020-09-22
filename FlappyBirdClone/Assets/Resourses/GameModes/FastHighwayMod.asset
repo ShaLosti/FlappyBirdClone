@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4473db33402d1c4ab750f10d5186509, type: 3}
+  m_Name: FastHighwayMod
+  m_EditorClassIdentifier: 
+  gameModeTitle: FastHighwayMod
+  backGround: {fileID: 21300000, guid: 05d755b3555a98b419cab6f0d4d2e549, type: 3}
+  plrPref: {fileID: 7694698236613340345, guid: 3ba0d91959009bb4ab25bb6432c63094, type: 3}
+  pipePref: {fileID: 6620241544951830969, guid: 54cb35bb89e07d94eb969322839c588c,
+    type: 3}
+  pipeHeadPref: {fileID: 8597527749495929038, guid: f81c1e2b5a2f0e641b2f8928aa1eb289,
+    type: 3}
+  globalGameMode: 0
+  backGroundColor: {r: 0.92156863, g: 1, b: 0.88235295, a: 1}
+  difficult: {fileID: 11400000, guid: 70ebd02f79278f141a97240425deb204, type: 2}
+  audioSourse:
+  - audioSoundsKey: 2
+    audioSource: {fileID: 8300000, guid: b706d841d3bdd7f40b340ee89bd71c2e, type: 3}
+  - audioSoundsKey: 1
+    audioSource: {fileID: 8300000, guid: fe517c9c3a15b6d4c9ef846f1833b439, type: 3}
+  - audioSoundsKey: 3
+    audioSource: {fileID: 8300000, guid: 97f682c0962e3cb4a8e98e68fa1ec5df, type: 3}

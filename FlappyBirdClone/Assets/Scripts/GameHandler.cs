@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour
 {
@@ -50,7 +49,7 @@ public class GameHandler : MonoBehaviour
         newGameObject.GetComponent<MeshRenderer>().material.color = Color.red;
 
         newGameObject.AddComponent<Bird>();
-        
+
         newGameObject.AddComponent<PolygonCollider2D>().SetPath(0, polConlliderPath);
 
         newGameObject.AddComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX;

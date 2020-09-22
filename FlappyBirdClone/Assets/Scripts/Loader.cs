@@ -5,21 +5,23 @@ public static class Loader
     public enum Scene
     {
         MainMenu,
-        Loading,
         Scene1,
-        CurrentScene
+        CurrentScene,
     }
+
     private static Scene targetScene;
+
     public static void Load(Scene scene)
     {
-        SceneManager.LoadScene(Scene.Loading.ToString());
         targetScene = scene;
+        LoadTargetScene();
     }
 
     public static void LoadTargetScene()
     {
         SceneManager.LoadScene(targetScene.ToString());
     }
+
     public static void LoadAdditiveScene(string _name)
     {
         if (_name == "CurrentScene")
@@ -27,6 +29,7 @@ public static class Loader
         if (!SceneManager.GetSceneByName(_name).isLoaded)
             SceneManager.LoadSceneAsync(_name, LoadSceneMode.Additive);
     }
+
     public static void UnloadScene(string _name = "CurrentScene")
     {
         _name = _name == "CurrentScene" ? SceneManager.GetActiveScene().name : _name;

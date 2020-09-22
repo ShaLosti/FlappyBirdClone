@@ -1,23 +1,35 @@
 ﻿using TMPro;
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameOverWindow : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI score;
     [SerializeField]
-    private Button retryButton;
-    [SerializeField]
-    private Button menuBtn;
+    private TextMeshProUGUI maxScore;
+
     private void Start()
     {
-        Bird.Instance.OnDie += Show;
-
-        retryButton.onClick.AddListener(() => Loader.Load(Loader.Scene.Scene1));
-        menuBtn.onClick.AddListener(() => Loader.Load(Loader.Scene.MainMenu));
+        ITakeDmg takeDmg;
+        foreach (var item in BirdContainerController.GetInstance.birds.Values)
+        {
+            item.TryGetComponent<ITakeDmg>(out takeDmg);
+            if (takeDmg != null)
+                item.GetComponent<ITakeDmg>().OnDie += Show;
+        }
 
         Hide();
+    }
+
+    public void OnMenuBtnClick()
+    {
+        Loader.Load(Loader.Scene.MainMenu);
+    }
+
+    public void OnRetryBtnClick()
+    {
+        Loader.Load(Loader.Scene.Scene1);
     }
 
     private void Hide()
@@ -27,7 +39,12 @@ public class GameOverWindow : MonoBehaviour
 
     private void Show()
     {
-        score.text = ScoreController.Instance.Score.text;
+        int maxGameScore = PlayerPrefs.GetInt("MaxGameScore", 0);
+        score.text = ScoreController.GetInstance.Score.text;
+        if (maxGameScore < Int32.Parse(score.text))
+            PlayerPrefs.SetInt("MaxGameScore", Int32.Parse(score.text));
+
+        maxScore.text = PlayerPrefs.GetInt("MaxGameScore").ToString();
         gameObject.SetActive(true);
     }
 }

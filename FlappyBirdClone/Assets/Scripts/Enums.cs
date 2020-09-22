@@ -1,9 +1,16 @@
-﻿
-public static class Enums
+﻿public static class Enums
 {
     public enum GlobalGameMods
     {
-        simple,
+        Simple,
         UpToDown
+    }
+
+    public enum AudioSounds
+    {
+        Jump,
+        ButtonEnter,
+        Die,
+        BackGroundMusic,
     }
 }

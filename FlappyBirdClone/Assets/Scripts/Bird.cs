@@ -1,69 +1,71 @@
 ﻿using System;
 using UnityEngine;
 
-public class Bird : MonoBehaviour
+public class Bird : MonoBehaviour, IPlrBird
 {
     private static Bird instance;
 
-    private Action onDie;
-    public static Bird Instance { get => instance; }
-    public Action OnDie { get => onDie; set => onDie = value; }
+    public static Bird GetInstance { get => instance; }
+    public bool AllowMove { get => allowMove; set => allowMove = value; }
 
     private Action<GameObject> fallingDown;
     private Action<GameObject> risingUp;
 
-    private GameMode lastGameMode;
-
     public Rigidbody2D objRigidbody2D;
-    private Sprite birdSprite;
-    private const int JUMPAMPUNT = 100;
 
-    public bool AllowMove = true;
+    [SerializeField]
+    private int jumpForce = 100;
+
+    private bool allowMove = true;
+    private bool jump = false;
+    public bool autoJump = false;
 
     private void Awake()
     {
         instance = this;
-        birdSprite = GetComponent<Sprite>();
-    }
-    private void Start()
-    {
-        objRigidbody2D = GetComponent<Rigidbody2D>();
-        objRigidbody2D.bodyType = RigidbodyType2D.Static;
-    }
-
-    public void SetNewGameMode(GameMode gameMode)
-    {
-        birdSprite = gameMode.plrSprite;
-
-        if(lastGameMode != null)
-        {
-            fallingDown -= gameMode.BirdGoDown;
-            risingUp -= gameMode.BirdGoUp;
-        }
-
-        fallingDown += gameMode.BirdGoDown;
-        risingUp += gameMode.BirdGoUp;
-
-        lastGameMode = gameMode;
     }
 
     private void OnEnable()
     {
-        onDie += StopBirdMove;
+        instance = this;
     }
 
-    private void OnDisable()
+    public void SetNativeGameMode(GameMode gameMode)
     {
-        onDie -= StopBirdMove;
+        fallingDown += gameMode.BirdGoDown;
+        risingUp += gameMode.BirdGoUp;
+    }
+
+    public void SetNewGameMode(GameMode gameMode, GameObject prevPlrBird)
+    {
+        transform.position = prevPlrBird.transform.position;
+        AllowMove = prevPlrBird.GetComponent<Bird>().AllowMove;
+        objRigidbody2D.bodyType = prevPlrBird.GetComponent<Rigidbody2D>().bodyType;
+        objRigidbody2D.velocity = prevPlrBird.GetComponent<Rigidbody2D>().velocity;
+        autoJump = prevPlrBird.GetComponent<Bird>().autoJump;
     }
 
     private void Update()
     {
+        if (autoJump)
+        {
+            if (transform.position.y < 0)
+                Jump();
+
+            return;
+        }
+
+        if (!allowMove)
+        {
+            objRigidbody2D.bodyType = RigidbodyType2D.Static;
+            return;
+        }
+
         switch (objRigidbody2D.bodyType)
         {
             case RigidbodyType2D.Static:
                 if ((Input.GetKeyDown(KeyCode.Space)
-                    || Input.GetMouseButtonDown(0)) && AllowMove)
+                    || Input.GetMouseButtonDown(0)))
                 {
                     objRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                     Jump();
@@ -78,29 +80,24 @@ public class Bird : MonoBehaviour
                 }
                 break;
         }
+    }
+    private void FixedUpdate()
+    {
+        if (jump)
+        {
+            objRigidbody2D.velocity = Vector2.up * jumpForce;
+            jump = false;
+        }
 
         if (objRigidbody2D.velocity.y < 0)
             fallingDown?.Invoke(gameObject);
         else if (objRigidbody2D.velocity.y > 0)
             risingUp?.Invoke(gameObject);
-
-        if (transform.position.y < -50 || transform.position.y > 50)
-            OnDie?.Invoke();
-    }
-
-    private void StopBirdMove()
-    {
-        objRigidbody2D.bodyType = RigidbodyType2D.Static;
     }
 
     private void Jump()
     {
-        objRigidbody2D.velocity = Vector2.up * JUMPAMPUNT;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        AllowMove = false;
-        OnDie?.Invoke();
+        StartCoroutine(SoundManager.PlaySound(Enums.AudioSounds.Jump, () => { }));
+        jump = true;
     }
 }
