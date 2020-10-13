@@ -7,6 +7,7 @@ public static class Loader
         MainMenu,
         Scene1,
         CurrentScene,
+        SecretLocation
     }
 
     private static Scene targetScene;

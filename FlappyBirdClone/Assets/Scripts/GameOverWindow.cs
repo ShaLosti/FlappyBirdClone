@@ -45,6 +45,7 @@ public class GameOverWindow : MonoBehaviour
             PlayerPrefs.SetInt("MaxGameScore", Int32.Parse(score.text));
 
         maxScore.text = PlayerPrefs.GetInt("MaxGameScore").ToString();
+        PlayerPrefs.SetInt("CurrentPoints", 0);
         gameObject.SetActive(true);
     }
 }

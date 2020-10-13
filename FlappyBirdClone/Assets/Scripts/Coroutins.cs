@@ -22,6 +22,7 @@ public static class Coroutins
     private static void Completed()
     {
         eventCompleted?.Invoke();
+        eventCompleted = null;
     }
 
     public static IEnumerator Move(Transform transform, Vector3 newPos, float time)
@@ -55,7 +56,18 @@ public static class Coroutins
         transform.anchoredPosition = newPos;
         Completed();
     }
-
+    public static IEnumerator MoveFromTo(Transform objectToMove, Vector3 a, Vector3 b, float speed)
+    {
+        float step = (speed / (a - b).magnitude) * Time.fixedDeltaTime;
+        float t = 0;
+        while (t <= 1.0f)
+        {
+            t += step; // Goes from 0 to 1, incrementing by step each time
+            objectToMove.position = Vector3.Lerp(a, b, t); // Move objectToMove closer to b
+            yield return new WaitForFixedUpdate();         // Leave the routine and return here in the next frame
+        }
+        objectToMove.position = b;
+    }
     public static IEnumerator Rotate(Transform transform, Vector3 newRotation, float time)
     {
         Vector3 initRot = transform.eulerAngles;
@@ -106,7 +118,24 @@ public static class Coroutins
         }
         Completed();
     }
-
+    public static IEnumerator Scale(Transform transform, float scaleFactor, float time)
+    {
+        var initScale = transform.localScale;
+        var targetScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+        float realTime = Time.time;
+        float elapsedTime = 0.0f;
+        float deltaScale;
+        while (transform != null && elapsedTime <= time)
+        {
+            deltaScale = Mathf.Lerp(initScale.x, scaleFactor, elapsedTime / time);
+            transform.localScale = new Vector3(deltaScale, deltaScale, deltaScale);
+            elapsedTime += Time.time - realTime;
+            realTime = Time.time;
+            yield return new WaitForSeconds(timeStep);
+        }
+        transform.localScale = targetScale;
+        Completed();
+    }
     public static IEnumerator Color(Image image, Color color, float time)
     {
         var initColor = image.color;
@@ -251,17 +280,32 @@ public static class Coroutins
         }
     }
 
-    public static IEnumerator FadeOutVolume(AudioSource audioSource, float time)
+    public static IEnumerator FadeVolume(AudioSource audioSource, float time, float targetValue)
     {
         float initVolume = audioSource.volume;
         float realTime = Time.time;
         float elapsedTime = 0.0f;
-        while (audioSource != null && audioSource.volume > 0.0f)
+        if(initVolume < targetValue)
         {
-            audioSource.volume = Mathf.Lerp(initVolume, 0.0f, elapsedTime / time);
-            elapsedTime += Time.time - realTime;
-            realTime = Time.time;
-            yield return new WaitForSeconds(timeStep);
+            if (audioSource.volume > 1.0f) audioSource.volume = 1.0f;
+
+            while (audioSource != null && audioSource.volume < 1f)
+            {
+                audioSource.volume = Mathf.Lerp(initVolume, 1f, elapsedTime / time);
+                elapsedTime += Time.time - realTime;
+                realTime = Time.time;
+                yield return new WaitForSeconds(timeStep);
+            }
+        }
+        else
+        {
+            while (audioSource != null && audioSource.volume > 0.0f)
+            {
+                audioSource.volume = Mathf.Lerp(initVolume, 0.0f, elapsedTime / time);
+                elapsedTime += Time.time - realTime;
+                realTime = Time.time;
+                yield return new WaitForSeconds(timeStep);
+            }
         }
         Completed();
     }

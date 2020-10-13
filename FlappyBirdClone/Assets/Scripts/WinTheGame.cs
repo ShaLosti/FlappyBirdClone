@@ -19,14 +19,21 @@ public class WinTheGame : MonoBehaviour
     GameObject scoreWindow;
     [SerializeField]
     CanvasGroup youWinTitle;
+    [SerializeField]
+    AudioSource finalMusic;
+    [SerializeField]
+    AudioSource prettyGood;
 
+    AudioClip finalClip;
     private void Start()
     {
+        finalClip = finalMusic.clip;
         StartCoroutine(Coroutins.FadeOut(blank, 1f));
     }
     public void GameWin()
     {
         Bird.GetInstance.autoJump = true;
+        prettyGood.Play();
         StartCoroutine(Coroutins.FadeIn(blank, fadeIn, 1f));
         StartCoroutine(Coroutins.FadeIn(youWinTitle, fadeIn, 1f));
         StartCoroutine(Coroutins.PerfomrmWithDelay(() =>
@@ -37,5 +44,11 @@ public class WinTheGame : MonoBehaviour
             StartCoroutine(Coroutins.FadeOut(youWinTitle, fadeOut-5f));
             StartCoroutine(Coroutins.FadeOut(blank, fadeOut));
         }, fadeIn + 1f));
+        StartCoroutine(EndBlank());
+    }
+    IEnumerator EndBlank()
+    {
+        yield return new WaitUntil(() => finalMusic.time >= finalClip.length - 18f);
+        StartCoroutine(Coroutins.FadeIn(blank, 16f, 1f));
     }
 }

@@ -58,6 +58,8 @@ public class Level : MonoBehaviour
     private float waitTimeBetweenChangeMod;
     private bool gameFinished = false;
     private bool lastPipePassed = false;
+    [SerializeField]
+    private int secretPipeNumber;
     public bool GameFinished { get => gameFinished; }
 
     [SerializeField]
@@ -70,7 +72,11 @@ public class Level : MonoBehaviour
 
     [SerializeField]
     private UnityEvent onPipePassedBird;
+    private bool stopAll;
+
     public UnityEvent OnPipePassedBird { get => onPipePassedBird; set => onPipePassedBird = value; }
+    public bool StopAll { get => stopAll; set => stopAll = value; }
+
     private void Awake()
     {
         gameModeForPlay.AddRange(gameMods.GameModes);
@@ -82,6 +88,12 @@ public class Level : MonoBehaviour
         SoundManager.Init();
         ChangeGameMode();
         SetDifficulty(currentDifficulty);
+        stopAll = false;
+        for (int i = 0; i < PlayerPrefs.GetInt("CurrentPoints") * 2; i++)
+        {
+            spawnedPipesCount++;
+            OnPipePassedBird?.Invoke();
+        }
     }
 
     private void Update()
@@ -92,6 +104,20 @@ public class Level : MonoBehaviour
                 HandlePipeSpawner();
             HandlePipeMovement();
         }
+
+        if(Bird.GetInstance.AllowMove && ScoreController.GetInstance.PipePassedCount == secretPipeNumber)
+        {
+            Bird.GetInstance.AllowMove = false;
+            if (Bird.GetInstance.TryGetComponent<ObjDie>(out ObjDie objDie))
+                objDie.CanDie = false;
+
+            Bird.GetInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
+            StartCoroutine(Coroutins.Move(Bird.GetInstance.transform, new Vector2(0, -CAMERA_ORTO_SIZE), 1f));
+            StartCoroutine(Coroutins.Scale(Bird.GetInstance.transform, 0, 1f));
+            Coroutins.eventCompleted += () => Loader.Load(Loader.Scene.SecretLocation);
+        }
+
+#warning DEBUG
         if (Input.GetKeyDown(KeyCode.D))
         {
             ForceChangeMode();
@@ -127,6 +153,7 @@ public class Level : MonoBehaviour
 
         Debug.Log("Prev game mode" + currentGameMode.gameModeTitle);
         currentGameMode = gameModeForPlay[currentGameModeId];
+        GameInfo.SetGameMode(currentGameMode);
         Debug.Log("Current game mode" + currentGameMode.gameModeTitle);
         currentDifficulty = currentGameMode.difficult;
         gameModeForPlay.Remove(currentGameMode);

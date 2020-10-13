@@ -8,6 +8,8 @@ public class ObjDie : MonoBehaviour, ITakeDmg
     public Action onDie;
     public Action OnDie { get => onDie; set => onDie = value; }
     public IPlrBird Plr { get => plr; }
+    public bool CanDie { get => canDie; set => canDie = value; }
+
     private IPlrBird plr;
     private float immortalTime = 0;
     private bool canDie = true;
@@ -32,6 +34,7 @@ public class ObjDie : MonoBehaviour, ITakeDmg
     {
         StartCoroutine(SoundManager.PlaySound(Enums.AudioSounds.Die, () => { }));
         plr.AllowMove = false;
+        PlayerPrefs.SetInt("CurrentPoints", 0);
         OnDie?.Invoke();
     }
     public void SetImmortalTime(GameMode _gamoMode) => immortalTime = immortalTimeAfterGameModeChange;
