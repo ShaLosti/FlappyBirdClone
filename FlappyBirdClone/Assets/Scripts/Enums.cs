@@ -5,6 +5,11 @@
         Simple,
         UpToDown
     }
+    public enum LadderType
+    {
+        top,
+        middle
+    }
 
     public enum AudioSounds
     {

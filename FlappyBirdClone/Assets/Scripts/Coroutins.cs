@@ -40,6 +40,21 @@ public static class Coroutins
         transform.position = newPos;
         Completed();
     }
+    public static IEnumerator MoveLocal(Transform transform, Vector3 newPos, float time)
+    {
+        Vector3 initPos = transform.localPosition;
+        float realTime = Time.time;
+        float elapsedTime = 0.0f;
+        while (transform != null && elapsedTime <= time)
+        {
+            transform.localPosition = Vector3.Lerp(initPos, newPos, elapsedTime / time);
+            elapsedTime += Time.time - realTime;
+            realTime = Time.time;
+            yield return new WaitForSeconds(timeStep);
+        }
+        transform.localPosition = newPos;
+        Completed();
+    }
 
     public static IEnumerator MoveRect(RectTransform transform, Vector2 newPos, float time)
     {

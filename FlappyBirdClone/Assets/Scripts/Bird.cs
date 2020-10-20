@@ -65,7 +65,7 @@ public class Bird : MonoBehaviour, IPlrBird
         {
             case RigidbodyType2D.Static:
                 if ((Input.GetKeyDown(KeyCode.Space)
-                    || Input.GetMouseButtonDown(0)))
+                    || Input.GetMouseButtonDown(0) || Input.touchCount > 0))
                 {
                     objRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                     Jump();
@@ -74,7 +74,7 @@ public class Bird : MonoBehaviour, IPlrBird
 
             case RigidbodyType2D.Dynamic:
                 if (Input.GetKeyDown(KeyCode.Space)
-                    || Input.GetMouseButtonDown(0))
+                    || Input.GetMouseButtonDown(0) || Input.touchCount > 0)
                 {
                     Jump();
                 }

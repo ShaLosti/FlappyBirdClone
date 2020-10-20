@@ -1,21 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
-public class InfinityLadder : MonoBehaviour
+namespace FBClone.SecretLevel
 {
-    AudioSource audioSource;
-    private void Start()
+    public class InfinityLadder : MonoBehaviour
     {
-        TryGetComponent<AudioSource>(out audioSource);
-        StartCoroutine(Coroutins.FadeVolume(audioSource, 1f, 1f));
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.GetComponent<PlrController>() != null)
+        [SerializeField]
+        Enums.LadderType ladderType;
+        [SerializeField]
+        private OnLadderPass onLadderPassEvent;
+
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (audioSource.isPlaying)
-                collision.GetComponent<PlrController>().ResetPosition();
+            if (collision.GetComponent<PlrController>() != null)
+            {
+                onLadderPassEvent?.Invoke(ladderType);
+            }
         }
+        [System.Serializable]
+        public class OnLadderPass : UnityEvent<Enums.LadderType> { }
     }
 }
