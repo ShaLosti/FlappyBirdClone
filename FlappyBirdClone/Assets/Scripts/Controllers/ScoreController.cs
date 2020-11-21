@@ -15,13 +15,10 @@ public class ScoreController : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
         TryGetComponent<TextMeshProUGUI>(out score);
     }
 
-    private void Start()
-    {
-        instance = this;
-    }
     public void IncreaseScore()
     {
         if (_increaseScore)

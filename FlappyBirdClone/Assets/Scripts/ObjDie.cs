@@ -15,10 +15,13 @@ public class ObjDie : MonoBehaviour, ITakeDmg
     private bool canDie = true;
     [SerializeField]
     private float immortalTimeAfterGameModeChange = 2f;
+    [SerializeField]
+    private float cameraTopAndBotBorders;
 
     private void Start()
     {
         plr = GetComponent<IPlrBird>();
+        cameraTopAndBotBorders = Camera.main.orthographicSize;
     }
     private void OnEnable()
     {
@@ -50,13 +53,13 @@ public class ObjDie : MonoBehaviour, ITakeDmg
             canDie = true;
             return;
         }
-        if (plr.AllowMove && (transform.position.y < -50 || transform.position.y > 50))
+        if (plr.AllowMove && (transform.position.y < -cameraTopAndBotBorders || transform.position.y > cameraTopAndBotBorders))
             Die();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<IDoDmg>() == null)
+        if (collision.gameObject.GetComponent<IDoDmg>() == null || !this.enabled)
             return;
 
         if(canDie)

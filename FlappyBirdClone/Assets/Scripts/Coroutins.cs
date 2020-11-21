@@ -8,17 +8,6 @@ public static class Coroutins
     public static Action eventCompleted;
     public static float timeStep = .01f;
 
-    public static IEnumerator PerfomrmWithDelay(Action func, float time = 0)
-    {
-        if (time == 0)
-            yield return null;
-        else
-            yield return new WaitForSeconds(time);
-
-        func?.Invoke();
-        Completed();
-    }
-
     private static void Completed()
     {
         eventCompleted?.Invoke();
@@ -112,6 +101,21 @@ public static class Coroutins
         while (canvas != null && canvas.alpha < alphaValue)
         {
             canvas.alpha = Mathf.Lerp(initAlpha, alphaValue, elapsedTime / time);
+            elapsedTime += Time.time - realTime;
+            realTime = Time.time;
+            yield return new WaitForSeconds(timeStep);
+        }
+        Completed();
+    }
+    public static IEnumerator FadeIn(SpriteRenderer spriteRenderer, float alpha, float time)
+    {
+        var initColor = spriteRenderer.color;
+        float realTime = Time.time;
+        float elapsedTime = 0.0f;
+        while (spriteRenderer != null && spriteRenderer.color.a < alpha)
+        {
+            initColor.a = Mathf.Lerp(initColor.a, alpha, elapsedTime / time);
+            spriteRenderer.color = initColor;
             elapsedTime += Time.time - realTime;
             realTime = Time.time;
             yield return new WaitForSeconds(timeStep);

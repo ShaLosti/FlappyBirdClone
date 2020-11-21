@@ -15,6 +15,8 @@ public class Bird : MonoBehaviour, IPlrBird
 
     [SerializeField]
     private int jumpForce = 100;
+    [SerializeField]
+    private bool changeRotation = true;
 
     private bool allowMove = true;
     private bool jump = false;

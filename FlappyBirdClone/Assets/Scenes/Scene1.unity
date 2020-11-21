@@ -1506,8 +1506,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169521190}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.059058763, y: 6.5576563, z: 0}
-  m_LocalScale: {x: 2.5265222, y: 2.3973825, z: 1.9679699}
+  m_LocalPosition: {x: -0.19, y: 6.38, z: 0}
+  m_LocalScale: {x: 2.4927416, y: 2.4927416, z: 4.90564}
   m_Children:
   - {fileID: 1257164153}
   m_Father: {fileID: 1008783964}
@@ -1812,6 +1812,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1295275055}
         m_TargetAssemblyTypeName: ScoreController, Assembly-CSharp
         m_MethodName: IncreaseScore
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1270450164}
+        m_TargetAssemblyTypeName: Level, Assembly-CSharp
+        m_MethodName: CheckSecretLvl
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

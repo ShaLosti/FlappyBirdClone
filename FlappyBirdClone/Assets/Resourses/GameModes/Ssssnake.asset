@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925f2d8f29649164abaf88f2485240f5, type: 3}
+  m_Name: Ssssnake
+  m_EditorClassIdentifier: 
+  gameModeTitle: Ssssnake
+  backGround: {fileID: 21300000, guid: 05d755b3555a98b419cab6f0d4d2e549, type: 3}
+  plrPref: {fileID: 7694698236613340345, guid: 777363fbce28d354d91a43506bb8a5f2, type: 3}
+  pipePref: {fileID: 6620241544951830969, guid: 54cb35bb89e07d94eb969322839c588c,
+    type: 3}
+  pipeHeadPref: {fileID: 8597527749495929038, guid: f81c1e2b5a2f0e641b2f8928aa1eb289,
+    type: 3}
+  particleSystem: {fileID: 0}
+  globalGameMode: 0
+  backGroundColor: {r: 1, g: 0.38685, b: 0.2216981, a: 1}
+  difficult: {fileID: 11400000, guid: 9a13da9dfe86e3a488c77532f3a080ca, type: 2}
+  audioSourse:
+  - audioSoundsKey: 3
+    audioSource: {fileID: 8300000, guid: 380d81edb8c7fe54e9272d899391808a, type: 3}

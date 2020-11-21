@@ -7,6 +7,8 @@ namespace FBClone.SecretLevel
     {
         SpriteRenderer spriteRenderer;
         Rigidbody2D rigidbody2d;
+        private static PlrController instance;
+
 
         [SerializeField]
         Vector2 defaultNegativeVelocity = new Vector2(0, -5);
@@ -15,13 +17,18 @@ namespace FBClone.SecretLevel
         Vector2 defaultPos;
 
         bool canMove = false;
+        bool stopMoving = false;
         private bool jumpRight;
         private bool jumpLeft;
         [SerializeField]
         private Vector2Int jumpForce;
 
-        public bool CanMove { get => canMove; set => canMove = value; }
-
+        public bool CanMove { get => canMove; }
+        public static PlrController GetInstance { get => instance; }
+        private void Awake()
+        {
+            instance = this;
+        }
         private void Start()
         {
             TryGetComponent<SpriteRenderer>(out spriteRenderer);
@@ -32,7 +39,10 @@ namespace FBClone.SecretLevel
 
             spriteRenderer.sprite = GameInfo.GetGameMode().plrPref.GetComponent<SpriteRenderer>().sprite;
         }
-
+        public void StopMoving(bool _canMove)
+        {
+            stopMoving = _canMove;
+        }
         private void Update()
         {
             if (rigidbody2d.velocity.y < defaultNegativeVelocity.y)
@@ -42,15 +52,15 @@ namespace FBClone.SecretLevel
                 rigidbody2d.velocity = defaultPos;
             }
 
-            if (!canMove)
+            if (!canMove || stopMoving || jumpLeft || jumpRight)
                 return;
 
-            if (Input.GetAxis("Horizontal") > 0)
+            if (Input.GetAxisRaw("Horizontal") > 0)
             {
                 jumpRight = true;
                 canMove = false;
             }
-            else if (Input.GetAxis("Horizontal") < 0)
+            else if (Input.GetAxisRaw("Horizontal") < 0)
             {
                 jumpLeft = true;
                 canMove = false;

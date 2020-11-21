@@ -20,7 +20,7 @@ public static class Loader
 
     public static void LoadTargetScene()
     {
-        SceneManager.LoadScene(targetScene.ToString());
+        Utils.GoToScene(targetScene.ToString());
     }
 
     public static void LoadAdditiveScene(string _name)

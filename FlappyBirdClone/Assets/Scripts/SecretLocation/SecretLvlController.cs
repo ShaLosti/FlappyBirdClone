@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,12 +25,18 @@ namespace FBClone.SecretLevel
         Transform[] allTopLadderBricks;
         [SerializeField]
         Transform[] allMiddleLadderBricks;
+
+        [Space(10)]
+        [SerializeField]
+        WaistSomeTime waistSomeTimeSpawnPoint;
+
         private bool musicStopPlaing = false;
         Transform mainCamera;
         Coroutine coroutine;
         private void Start()
         {
-            mainCamera = Camera.main.transform;
+            mainCamera = CameraController.CurrentCamera.MainCamera.transform;
+
             audioSource.Play();
             musicStopPlaing = false;
             audioSource.volume = 0;
@@ -51,11 +58,21 @@ namespace FBClone.SecretLevel
             topLadderOffset.y *= -1;
             midLadderOffset.y *= -1;
         }
+
 #warning DEBUG
-        public void OnScipLadderBtnPress()
+        public void OnSkipLadderBtnPress()
         {
             audioSource.Stop();
         }
+        public void OnGoToCutscenePress()
+        {
+            OnSkipLadderBtnPress();
+            mainCamera.localPosition = new Vector3(0, .5f, -1);
+            Vector3 plrPos = PlrController.GetInstance.transform.position;
+            Vector3 targetPos = waistSomeTimeSpawnPoint.WaistTimeSpawnPoint.position;
+            PlrController.GetInstance.transform.position = targetPos;
+        }
+#warning END_DEBUG
         public void LadderHandler(Enums.LadderType currentLadderTypePassed)
         {
             if (musicStopPlaing)
@@ -72,22 +89,32 @@ namespace FBClone.SecretLevel
                 LadderHandler(currentLadderTypePassed);
                 return;
             }
-
+            Vector2 topLadderPos;
+            Vector2 botLadderPos;
+            Vector2 midLadderPos;
             switch (currentLadderTypePassed)
             {
                 case Enums.LadderType.middle:
-                    topLadder.transform.localPosition = new Vector2(topLadder.transform.localPosition.x,
-                        topLadder.transform.localPosition.y + topLadderOffset.y);
 
-                    botLadder.transform.localPosition = new Vector2(botLadder.transform.localPosition.x,
-                        botLadder.transform.localPosition.y + midLadderOffset.y / 2);
+                    topLadderPos = topLadder.transform.localPosition;
+                    topLadderPos.y = topLadderPos.y + topLadderOffset.y;
+                    topLadder.transform.localPosition = topLadderPos;
+
+                    botLadderPos = botLadder.transform.localPosition;
+                    botLadderPos.y = botLadderPos.y + midLadderOffset.y / 2;
+                    botLadder.transform.localPosition = botLadderPos;
+
                     break;
                 case Enums.LadderType.top:
-                    midLadder.transform.localPosition = new Vector2(midLadder.transform.localPosition.x,
-                        midLadder.transform.localPosition.y + midLadderOffset.y);
 
-                    botLadder.transform.localPosition = new Vector2(botLadder.transform.localPosition.x,
-                        botLadder.transform.localPosition.y + topLadderOffset.y / 2);
+                    midLadderPos = midLadder.transform.localPosition;
+                    midLadderPos.y = midLadderPos.y + midLadderOffset.y;
+                    midLadder.transform.localPosition = midLadderPos;
+
+                    botLadderPos = botLadder.transform.localPosition;
+                    botLadderPos.y = botLadderPos.y + topLadderOffset.y / 2;
+                    botLadder.transform.localPosition = botLadderPos;
+
                     break;
             }
         }

@@ -13,8 +13,10 @@ public class Level : MonoBehaviour
     private const float CAMERA_ORTO_SIZE = 50f;
     private const float WIDTH_PIPE = 15;
     private const int PIPE_DESTROY_X_POS = -140;
-    private const int PIPE_SPAWN_X_POS = 120;
+    private float pipeXSpawnPos = 120;
     public const int MAX_PIPES = 600; // спавн 2 пайпов это 1 очко для игрока, так что нужно пройти 600 пайпов что бы получить 300 очков
+
+    Camera mainCamera;
 
     [SerializeField]
     private SpriteRenderer backGround;
@@ -22,7 +24,7 @@ public class Level : MonoBehaviour
     [SerializeField]
     public GameMods gameMods;
 
-    private List<GameMode> gameModeForPlay = new List<GameMode>();
+    private static List<GameMode> gameModeForPlay = new List<GameMode>();
 
     [SerializeField]
     private GameMode currentGameMode;
@@ -85,6 +87,7 @@ public class Level : MonoBehaviour
 
     private void Start()
     {
+        mainCamera = Camera.main;
         SoundManager.Init();
         ChangeGameMode();
         SetDifficulty(currentDifficulty);
@@ -105,18 +108,6 @@ public class Level : MonoBehaviour
             HandlePipeMovement();
         }
 
-        if(Bird.GetInstance.AllowMove && ScoreController.GetInstance.PipePassedCount == secretPipeNumber)
-        {
-            Bird.GetInstance.AllowMove = false;
-            if (Bird.GetInstance.TryGetComponent<ObjDie>(out ObjDie objDie))
-                objDie.CanDie = false;
-
-            Bird.GetInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
-            StartCoroutine(Coroutins.Move(Bird.GetInstance.transform, new Vector2(0, -CAMERA_ORTO_SIZE), 1f));
-            StartCoroutine(Coroutins.Scale(Bird.GetInstance.transform, 0, 1f));
-            Coroutins.eventCompleted += () => Loader.Load(Loader.Scene.SecretLocation);
-        }
-
 #warning DEBUG
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -130,8 +121,27 @@ public class Level : MonoBehaviour
                 OnPipePassedBird?.Invoke();
             }
         }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            PlayerPrefs.SetInt("SecretLvlPassed", 0);
+        }
     }
+    public void CheckSecretLvl()
+    {
+        if (Bird.GetInstance.AllowMove && ScoreController.GetInstance.PipePassedCount == secretPipeNumber && PlayerPrefs.GetInt("SecretLvlPassed") != 1)
+        {
+            Bird.GetInstance.AllowMove = false;
+            if (Bird.GetInstance.TryGetComponent<ObjDie>(out ObjDie objDie))
+                objDie.CanDie = false;
 
+            PlayerPrefs.SetInt("CurrentPoints", ScoreController.GetInstance.PipePassedCount);
+
+            Bird.GetInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
+            StartCoroutine(Coroutins.Move(Bird.GetInstance.transform, new Vector2(0, -CAMERA_ORTO_SIZE), 1f));
+            StartCoroutine(Coroutins.Scale(Bird.GetInstance.transform, 0, 1f));
+            Coroutins.eventCompleted += () => Loader.Load(Loader.Scene.SecretLocation);
+        }
+    }
     private void ForceChangeMode()
     {
         SoundManager.StopAllSounds();
@@ -161,6 +171,8 @@ public class Level : MonoBehaviour
 
         pipePref = currentGameMode.pipePref;
         pipeHeadPref = currentGameMode.pipeHeadPref;
+
+        pipeXSpawnPos = mainCamera.aspect * Camera.main.orthographicSize + pipePref.GetComponent<SpriteRenderer>().bounds.size.x;
 
         waitTimeBetweenChangeMod = 2f;
 
@@ -198,7 +210,7 @@ public class Level : MonoBehaviour
 
             float height = UnityEngine.Random.Range(minHeight, maxHeight);
 
-            CreateGapPipes(height, gapSize, PIPE_SPAWN_X_POS);
+            CreateGapPipes(height, gapSize, pipeXSpawnPos);
         }
     }
 

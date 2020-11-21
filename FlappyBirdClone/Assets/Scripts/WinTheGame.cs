@@ -33,19 +33,26 @@ public class WinTheGame : MonoBehaviour
     public void GameWin()
     {
         Bird.GetInstance.autoJump = true;
+
+        if (Bird.GetInstance.GetComponent<ObjDie>() != null)
+            Bird.GetInstance.GetComponent<ObjDie>().enabled = false;
+
         prettyGood.Play();
         StartCoroutine(Coroutins.FadeIn(blank, fadeIn, 1f));
         StartCoroutine(Coroutins.FadeIn(youWinTitle, fadeIn, 1f));
-        StartCoroutine(Coroutins.PerfomrmWithDelay(() =>
-        {
-            billyGif.SetActive(true);
-            scoreWindow.SetActive(false);
-            backGround.color = new Color32(235, 255, 225, 255);
-            StartCoroutine(Coroutins.FadeOut(youWinTitle, fadeOut-5f));
-            StartCoroutine(Coroutins.FadeOut(blank, fadeOut));
-        }, fadeIn + 1f));
+        PlayerPrefs.DeleteAll();
+        Utils.PerformWithDelay(this, fadeIn + 1f,
+            () =>
+            {
+                billyGif.SetActive(true);
+                scoreWindow.SetActive(false);
+                backGround.color = new Color32(235, 255, 225, 255);
+                StartCoroutine(Coroutins.FadeOut(youWinTitle, fadeOut - 5f));
+                StartCoroutine(Coroutins.FadeOut(blank, fadeOut));
+            });
         StartCoroutine(EndBlank());
     }
+
     IEnumerator EndBlank()
     {
         yield return new WaitUntil(() => finalMusic.time >= finalClip.length - 18f);
